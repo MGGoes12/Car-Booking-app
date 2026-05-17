@@ -6,6 +6,7 @@
     "ng": "ng",
     "start": "ng serve --open",
     "build": "ng build && node scripts/inject-env.js",
+    "build:vercel": "ng build --configuration production --verbose && node scripts/inject-env.js",
     "preview": "npx serve -s dist/cotton-car-booking",
     "test": "ng test"
   },
