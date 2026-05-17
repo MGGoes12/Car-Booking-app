@@ -1,0 +1,12 @@
+import { Routes } from '@angular/router';
+import { LoginComponent } from './pages/login/login.component';
+import { BookingComponent } from './pages/booking/booking.component';
+import { OverviewComponent } from './pages/overview/overview.component';
+
+export const appRoutes: Routes = [
+  { path: 'login', component: LoginComponent },
+  { path: 'booking', component: BookingComponent },
+  { path: 'overview', component: OverviewComponent },
+  { path: '', redirectTo: 'overview', pathMatch: 'full' },
+  { path: '**', redirectTo: 'overview' }
+];

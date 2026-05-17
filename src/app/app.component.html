@@ -1,0 +1,18 @@
+<div class="app-shell">
+  <header>
+    <div>
+      <h1>Cotton Car Booking</h1>
+      <p class="small-text">Mobile-first family booking for the car</p>
+    </div>
+    <nav>
+      <a routerLink="/overview" class="secondary">Overview</a>
+      <a routerLink="/booking" class="secondary">Booking</a>
+      <button *ngIf="installAvailable" type="button" class="primary" (click)="installApp()">Install App</button>
+      <button *ngIf="user" type="button" class="secondary" (click)="logout()">Logout</button>
+    </nav>
+  </header>
+
+  <main>
+    <router-outlet></router-outlet>
+  </main>
+</div>

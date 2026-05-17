@@ -1,0 +1,33 @@
+<div class="page-card">
+  <h2>{{ mode === 'signin' ? 'Sign In' : 'Create Account' }}</h2>
+  <p class="small-text">Use your family email to access the booking app.</p>
+
+  <form (ngSubmit)="submit()">
+    <label>
+      Email
+      <input type="email" [(ngModel)]="email" name="email" required />
+    </label>
+    <label>
+      Password
+      <input type="password" [(ngModel)]="password" name="password" required />
+    </label>
+
+    <button type="submit" class="primary">{{ mode === 'signin' ? 'Sign In' : 'Sign Up' }}</button>
+  </form>
+
+  <button type="button" class="secondary" (click)="mode = mode === 'signin' ? 'signup' : 'signin'">
+    {{ mode === 'signin' ? 'Switch to Sign Up' : 'Switch to Sign In' }}
+  </button>
+
+  <div class="page-card">
+    <h3>Forgot Password?</h3>
+    <label>
+      Reset email
+      <input type="email" [(ngModel)]="resetEmail" name="resetEmail" />
+    </label>
+    <button type="button" class="secondary" (click)="resetPassword()">Send reset link</button>
+  </div>
+
+  <div *ngIf="error" class="error-message">{{ error }}</div>
+  <div *ngIf="message" class="success-message">{{ message }}</div>
+</div>

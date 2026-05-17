@@ -1,0 +1,56 @@
+<div class="page-card">
+  <h2>Booking overview</h2>
+  <p class="small-text">Use the calendar to see booked days and pending approvals.</p>
+  <div class="small-text">Month: {{ currentMonth.toLocaleString('default', { month: 'long' }) }} {{ currentMonth.getFullYear() }}</div>
+  <div style="display:flex; gap:0.75rem; margin:0.75rem 0; flex-wrap:wrap;">
+    <button type="button" class="secondary" (click)="previousMonth()">Previous</button>
+    <button type="button" class="secondary" (click)="nextMonth()">Next</button>
+    <button type="button" class="primary" (click)="pullReport()">Pull report</button>
+  </div>
+
+  <div class="calendar-grid">
+    <div *ngFor="let day of days" [class.calendar-day]="true" [class.booked]="day.booked">
+      <div class="day-number">{{ day.label }}</div>
+      <div *ngIf="day.booked" class="small-text">{{ day.bookings.length }} booking(s)</div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="user?.is_admin" class="page-card">
+  <h3>Pending approvals</h3>
+  <div *ngIf="bookings.filter(b => b.status === 'pending').length === 0" class="small-text">No pending bookings.</div>
+  <div *ngFor="let booking of bookings.filter(b => b.status === 'pending')" class="booking-row">
+    <div><strong>{{ booking.booking_date }}</strong> {{ booking.start_time }} - {{ booking.end_time }} </div>
+    <div>{{ booking.reason }}</div>
+    <div class="small-text">Requested by {{ booking.user_email }}</div>
+    <button type="button" class="primary" (click)="supabase.approveBooking(booking.id as string, 'approved')">Approve</button>
+    <button type="button" class="secondary" (click)="supabase.approveBooking(booking.id as string, 'rejected')">Reject</button>
+  </div>
+</div>
+
+<div *ngIf="showReport" class="page-card">
+  <h3>Report results</h3>
+  <div *ngIf="reportResults.length === 0" class="small-text">No bookings found.</div>
+  <div *ngFor="let booking of reportResults" class="booking-row">
+    <div><strong>{{ booking.booking_date }}</strong> {{ booking.reason }}</div>
+    <div>{{ booking.user_email }} | {{ booking.status }}</div>
+    <div>KM used: {{ booking.actual_end_km != null && booking.actual_start_km != null ? booking.actual_end_km - booking.actual_start_km : 'pending' }}</div>
+  </div>
+</div>
+
+<div class="page-card">
+  <h3>Report filter</h3>
+  <form>
+    <label>
+      From
+      <input type="date" [(ngModel)]="reportFrom" name="reportFrom" />
+    </label>
+    <label>
+      To
+      <input type="date" [(ngModel)]="reportTo" name="reportTo" />
+    </label>
+  </form>
+</div>
+
+<div *ngIf="error" class="error-message">{{ error }}</div>
+<div *ngIf="message" class="success-message">{{ message }}</div>
